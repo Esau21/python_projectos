@@ -1,0 +1,108 @@
+Escritura de instrucciones "if"
+Completado
+100 XP
+4 minutos
+Para expresar la lógica condicional en Python, se usan instrucciones if. Al escribir una instrucción if, se basa en otro concepto que se describe en este módulo, el de los operadores matemáticos. Python admite los operadores lógicos comunes de matemáticas: igual, no igual, menor que, menor o igual que, mayor que y mayor o igual que. Probablemente esté acostumbrado a ver que estos operadores se muestran mediante símbolos, que también es la forma en que se representan en Python.
+
+Es igual que: a == b
+No es igual a: a != b
+Menor que: a < b
+Menor o igual que: a <= b
+Mayor que: a > b
+Mayor o igual que: a >= b
+
+Expresiones de prueba
+Debe usar una instrucción if para ejecutar código solo si se cumple una condición concreta. Lo primero que hace al escribir una instrucción if es comprobar la condición mediante una expresión de prueba. Después, se determina si la instrucción se evalúa como True o False. Si es True, se ejecuta el siguiente bloque de código con sangría:
+
+Python
+
+Copiar
+a = 97
+b = 55
+# test expression
+if a < b:
+    # statement to be run
+    print(b)
+En este ejemplo, a < b es la expresión de prueba. El programa evalúa la expresión de prueba y, después, ejecuta el código dentro de la instrucción if solo si la expresión de prueba es True. Si evalúa la expresión, sabe que es False, por lo que no se ejecutará ningún código que escriba en la instrucción if.
+
+En Python, se debe aplicar sangría al cuerpo de una instrucción if. Siempre se ejecutará cualquier código que siga a una expresión de prueba que no tenga sangría:
+
+Python
+
+Copiar
+a = 24
+b = 44
+if a <= 0:
+    print(a)
+print(b)
+
+¿Qué son las instrucciones "else" y "elif"?
+Completado
+100 XP
+4 minutos
+¿Qué ocurre si también quiere que el programa ejecute un fragmento de código cuando la expresión de prueba es False? ¿O bien, qué ocurre si quiere incluir otra expresión de prueba? Python tiene otras palabras clave que puede usar para crear instrucciones if más complejas, else y elif. Al usar if, else y elif de forma conjunta, puede escribir programas complejos con varias expresiones de prueba e instrucciones para ejecutar.
+
+Uso de else
+Sabe que cuando se usa una instrucción if, el cuerpo del programa solo se ejecutará si la expresión de prueba es True. Para agregar más código que se ejecute cuando la expresión de prueba sea False, debe agregar una instrucción else.
+
+Ahora se volverá al ejemplo de la sección anterior:
+
+Uso de elif
+En Python, la palabra clave elif es la abreviatura de else if. El uso de instrucciones elif permite agregar varias expresiones de prueba al programa. Estas instrucciones se ejecutan en el orden en que se escriben, por lo que el programa escribirá una instrucción elif solo si la primera instrucción if es False. Por ejemplo:
+
+
+¿Qué son los operadores "and" y "or"?
+Completado
+100 EXP
+4 minutos
+En ocasiones, es posible que quiera combinar expresiones de prueba para evaluar varias condiciones en una instrucción if, elif o else. En este caso, usaría los operadores booleanos and y or.
+
+El operador or
+Puede conectar dos expresiones booleanas, o de prueba, mediante el operador booleano or. Para que toda la expresión se evalúe como True, al menos una de las subexpresiones debe ser true. Si ninguna de las subexpresiones es true, toda la expresión se evalúa como False. Por ejemplo, en la expresión siguiente, toda la expresión de prueba se evalúa como True, porque se ha cumplido una de las condiciones de las subexpresiones:
+
+
+Diferencia entre and y or
+Para resaltar la diferencia entre los dos operadores booleanos, puede usar una tabla de verdad. Una tabla de verdad muestra cómo se evalúa toda la expresión de prueba en función de las dos subexpresiones.
+
+Esta es la tabla de verdad para and:
+
+subexpression1	Operador	subexpression2	Resultado
+True	and	True	True
+True	and	False	False
+False	and	True	False
+False	and	False	False
+
+Esta es la tabla de verdad para or:
+
+subexpression1	Operador	subexpression2	Resultado
+True	or	True	True
+True	or	False	True
+False	or	True	True
+False	or	False	False
+
+def aproximidad():
+    object_size = 10
+    proximity = 9000
+    if object_size < 5 and proximity > 1000:
+        if object_size >= 5 and proximity >= 1000:
+            print("Se requieren maniobras evasivas")
+        else:
+            print("No se requieren maniobras evasivas")
+    elif object_size < 5 and proximity > 1000:
+        print("No se requieren de maniobras evasivas")
+    else:
+        print("No hay amenzazas")
+value = aproximidad()
+
+
+2. ¿De qué es abreviatura la palabra clave elif en Python?
+
+más si esta es correcta.
+¡Correcto! Puede usar la palabra clave elif para agregar varias expresiones de prueba al programa.
+
+
+sólo si
+Incorrecto. Si quiere ejecutar un bloque de código solo si una condición determinada es true, puede usar una instrucción if.
+
+
+demás

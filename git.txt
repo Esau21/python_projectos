@@ -1,0 +1,16 @@
+Introducción
+Al hacer clic en el botón Iniciar el ejercicio en GitHub siguiente, se le redireccionará a un repositorio de plantillas de GitHub público 
+que le pedirá que complete una serie de pequeños desafíos. Antes de comenzar el ejercicio, realice las siguientes tareas:
+
+Seleccione el botón Iniciar curso o la característica Usar esta plantilla en el repositorio de plantillas. Al hacerlo, se le pedirá que 
+cree un repositorio nuevo. Se recomienda crear un repositorio público, ya que los repositorios privados usarán minutos de Acciones. 
+Después de crear su propio repositorio a partir de la plantilla, espere unos 20 segundos y actualice.
+
+Siga las instrucciones del archivo Léame del repositorio para comprender cómo funciona el ejercicio, los objetivos de aprendizaje y cómo 
+completar correctamente el ejercicio.
+
+Cuando haya terminado el ejercicio en GitHub, vuelva aquí para lo siguiente:
+
+Prueba de conocimientos breve
+Resumen de lo que ha aprendido
+Distintivo por completar este módulo

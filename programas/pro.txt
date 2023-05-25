@@ -1,0 +1,76 @@
+Definición de un lenguaje de programación
+Completado
+100 XP
+2 minutos
+En la unidad anterior, hemos hablado de que aprender a programar es una gran aptitud. Pero ¿qué es la codificación?
+
+¿Qué es el código?
+Las líneas de código son instrucciones que los humanos proporcionan a los equipos para hacer cosas. Aunque pueda escuchar que los equipos son inteligentes y asombrosos, por sí mismos solo son buenos en algo: en cumplir instrucciones explícitas.
+
+El código permite indicar a los vehículos lunares por dónde moverse y a los cohetes cómo volar. Sin el código, los equipos no serían más que un montón de metal. Pero con el código, los equipos pueden realizar acciones fuera del alcance de los humanos.
+
+¿Cómo se programa?
+Para programar, o escribir instrucciones para los equipos, es necesario escribir en un lenguaje que entiendan. Esta comunicación adopta la forma de lenguajes de programación. El código que está escrito en estos lenguajes se traduce en unos y ceros, lo que se denomina código binario, que los equipos pueden leer y ejecutar como acciones. Hay muchos lenguajes de programación en todo el mundo, y cada uno se especializa en algo diferente. En esta ruta de aprendizaje nos centraremos en Python, un lenguaje que funciona bien para solucionar problemas de datos de gran tamaño.
+
+ Nota
+
+Las personas que programan reciben muchos nombres. Algunos nombres implican distintas especialidades. Pero algunos de los nombres habituales que puede encontrar son desarrollador, codificador y programador. En estos módulos, verá que se denomina "desarrolladores" a quienes escriben código.
+
+Ejecución y depuración de código
+Una vez que un desarrollador ha escrito código, lo ejecuta. Al ejecutar el código, se indica al equipo que lo lea y lleve a cabo las instrucciones. Cuando se le indica al equipo que ejecute el código, realizará una de estas dos acciones: ejecutarlo correctamente o indicar que se ha producido un error en algún lugar.
+
+Los errores en el código se conocen como "errores" y su corrección se denomina "depuración". La depuración es una parte importante de la programación y una gran aptitud que se puede aplicar a otros muchos aspectos de la vida.
+
+Básicamente, la depuración consiste en seguir el método científico. Un desarrollador:
+
+Tendrá una hipótesis de lo que debería haber sucedido
+Para recopilar información, examinará el código con una herramienta denominada depurador, o bien lo leerá manualmente
+Analizará en qué difiere la ejecución del comportamiento esperado
+Modificará el código
+Volverá a probarlo
+
+
+Descripción de la importancia de Python en la solución de problemas de macrodatos
+Completado
+100 XP
+2 minutos
+Python es el lenguaje de programación que va a usar en esta ruta de aprendizaje. Aunque pueda parecer que va a obtener información sobre un único lenguaje de programación, los conceptos que se describen se pueden aplicar a muchos otros.
+
+Orígenes de Python
+En 1991, Guido van Rossum creó Python y lo bautizó así por el programa de televisión de los Monty Python. Python es un lenguaje de programación general por lo que, desde el punto de vista del programador, el código se asemeja más a un idioma natural (en inglés) y, por tanto, es más fácil de leer y escribir. Python realiza el trabajo pesado en segundo plano y convierte instrucciones de lenguaje relativamente naturales en comandos que un equipo puede ejecutar.
+
+¿Por qué Python?
+Es posible que se pregunte por qué de todos los lenguajes de programación existentes se ha elegido Python. Durante los últimos 15 años, Python ha crecido en popularidad y a menudo se considera un excelente lenguaje de programación para principiantes. También es versátil y se puede aplicar a temas informáticos avanzados, como la ciencia de datos y el aprendizaje automático. Además, Python tiene muchos paquetes y bibliotecas de código escritos por otros usuarios. Puede incluirlos en sus propios proyectos para disminuir el código que debe escribir.
+
+Ejemplos del mundo real de Python en funcionamiento
+Ejemplos de software que incluyen código de Python son YouTube, Dropbox y Google. Incluso la NASA tiene una página de proyectos de código abierto, muchos de ellos programados en Python.
+
+Jupyter Notebook y Python
+Se usará un tipo de archivo denominado Jupyter Notebook para ayudarle a aprender Python. Jupyter Notebook admite Python en un estilo REPL (read-eval-print loop), lo que significa que los usuarios pueden escribir unas cuantas líneas de código en un archivo, ejecutarlas dentro del archivo y, después, escribir más código y continuar la ejecución. Los cuadernos de Jupyter Notebook también admiten la reejecución de "celdas", que son fragmentos de código. Este tipo de entorno de codificación crea una gran experiencia para aprender un nuevo lenguaje de programación. Pero no se preocupe, la instalación de la extensión de Python para Visual Studio Code instala el cuaderno automáticamente.
+
+
+Examen de datos del mundo real
+Completado
+100 EXP
+3 minutos
+Los datos presentados en el material educativo suelen ser notablemente perfectos, diseñados para mostrar a los alumnos cómo encontrar relaciones claras entre las variables. Los datos del mundo real son algo menos sencillos.
+
+Debido a la complejidad de los datos del "mundo real", hay que inspeccionar los datos sin procesar para detectar problemas antes de utilizarlos.
+
+Por ello, el procedimiento recomendado es inspeccionar los datos sin procesar y procesarlos antes de utilizarlos, lo que reduce los errores o problemas, normalmente eliminando los puntos de datos erróneos o modificando los datos para que sean más útiles.
+
+Problemas de los datos del mundo real
+Los datos del mundo real pueden contener muchos problemas diferentes que pueden afectar a la utilidad de los datos y a nuestra interpretación de los resultados.
+
+Es importante tener en cuenta que la mayoría de los datos del mundo real están influenciados por factores que no se registraron en ese momento. Por ejemplo, podríamos tener una tabla con los tiempos de los coches de carreras junto con los tamaños de los motores, pero otros factores que no se anotaron, como el clima, probablemente también influyeron. Si son problemáticos, la influencia de estos factores puede reducirse a menudo aumentando el tamaño del conjunto de datos.
+
+En otras situaciones, los puntos de datos que están claramente fuera de lo esperado, también conocidos como valores atípicos, a veces se pueden quitar de forma segura de los análisis, aunque se debe tener cuidado para no quitar puntos de datos que proporcionen información real.
+
+Otro problema común en los datos del mundo real es el sesgo. El sesgo se refiere a la tendencia a seleccionar ciertos tipos de valores con más frecuencia que otros, de forma que se falsea la población subyacente, o el "mundo real". A veces se puede identificar el sesgo explorando los datos y teniendo en cuenta los conocimientos básicos sobre la procedencia de estos.
+
+Recuerde que los datos del mundo real siempre tendrán problemas, pero esto suele ser un problema superable. Recuerde:
+
+Compruebe los valores que faltan y los datos registrados de forma incorrecta.
+Considere la posibilidad de eliminar valores atípicos obvios.
+Considere qué factores del mundo real podrían afectar al análisis y vea si el tamaño del conjunto de datos es lo suficientemente grande como para controlarlos.
+Compruebe si los datos sin procesar están sesgados y considere sus opciones para corregirlos, si se encuentran.

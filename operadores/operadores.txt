@@ -1,0 +1,176 @@
+¿Cuáles son los operadores en Python?
+Completado
+100 XP
+3 minutos
+Por lo general, las matemáticas implican unas cuatro operaciones principales: suma, resta, multiplicación y división. Python admite estos cuatro operadores y algunos otros. Vamos a explorar los operadores más comunes que usará en los programas.
+
+Suma
+Python usa para + indicar la suma. Usar + entre dos números los suma y proporciona el total.
+
+Python
+
+Copiar
+answer = 30 + 12
+print(answer)
+
+# Output: 42
+ Nota
+
+Los operadores se comportan igual cuando se usan números literales (como 42) o variables.
+
+Resta
+De manera similar, Python utiliza - para la resta. Usar - entre dos números los resta y proporciona la diferencia.
+
+Python
+
+Copiar
+difference = 30 - 12
+print(difference)
+
+# Output: 18
+Multiplicación
+En Python, * es el operador de multiplicación. Proporciona el producto de dos números:
+
+Python
+
+Copiar
+product = 30 * 12
+print(product)
+
+# Output: 360
+División
+Por último, / se usa para la división. Proporciona el cociente de dos números:
+
+Python
+
+Copiar
+quotient = 30 / 12
+print(quotient)
+
+# Output: 2.5
+Uso de la división
+Imagine que debe convertir un número de segundos en minutos y segundos para su visualización.
+
+Python
+
+Copiar
+seconds = 1042
+El primer paso consiste en determinar el número de minutos que hay en 1042 segundos. Con 60 segundos en un minuto, puede dividir por 60 y obtener una respuesta de 17.3666667. El número que le interesa simplemente es 17. Se recomienda redondear hacia abajo, usando lo que se conoce como división de múltiplo inferior. Para realizar una división de este tipo en Python, debe utilizar //.
+
+Python
+
+Copiar
+seconds = 1042
+display_minutes = 1042 // 60
+print(display_minutes)
+
+# Output: 17
+El paso siguiente es determinar el número de segundos. Este número es el resto de 1042 si divide entre 60. Para encontrar el resto, use el operador módulo, que en Python es %. El resto de 1042 / 60 es 22, que es el valor que el operador módulo proporcionará.
+
+Python
+
+Copiar
+seconds = 1042
+display_minutes = 1042 // 60
+display_seconds = 1042 % 60
+
+print(display_minutes)
+print(display_seconds)
+
+# Output:
+# 17
+# 22
+Orden de las operaciones
+Python respeta el orden de las operaciones en matemáticas. El orden de las operaciones determina que las expresiones se deben evaluar en este orden:
+
+Paréntesis
+Exponentes
+Multiplicación y división
+Suma y resta
+Observe que se evalúan los paréntesis antes que cualquier otra operación. Usar paréntesis le permite asegurarse de que el código se ejecute de una manera predecible y el código resulta más fácil de leer y mantener. Como resultado, el procedimiento recomendado es usar paréntesis aunque el orden de las operaciones se evalúe de la misma manera sin ellos. En las dos líneas de código siguientes, la segunda es más comprensible porque el paréntesis indica claramente qué operación se realizará primero.
+
+Python
+
+Copiar
+result_1 = 1032 + 26 * 2
+result_2 = 1032 + (26 * 2)
+# The answer is the same in both cases - 1084
+
+Uso de números en Python
+Completado
+100 EXP
+4 minutos
+Más allá de la aritmética básica, puede usar otras operaciones en los números. Es posible que tenga que realizar un redondeo o convertir cadenas en números.
+
+En el escenario de este módulo, quiere aceptar la entrada de un usuario. La entrada será una cadena en lugar de un número, por lo que deberá convertirla en un número. Además, es posible que el usuario escriba valores que le den una respuesta negativa que no querrá mostrar. Puede que tenga que convertir la respuesta en el valor absoluto. Afortunadamente, Python proporciona utilidades para estas operaciones.
+
+Conversión de cadenas en números
+Python admite dos tipos principales de números: números enteros (o int) y número de punto flotante (o float). La diferencia clave entre ambos es la existencia de un separador decimal; los enteros son números enteros, mientras que los números de punto flotante contienen un valor decimal.
+
+Al convertir cadenas en números, debe indicar el tipo de número que desea crear. Tiene que decidir si necesita un separador decimal. Se usa int para realizar la conversión en un número entero y float para hacerlo en un número de punto flotante.
+
+Pitón
+
+Copiar
+demo_int = int('215')
+print(demo_int)
+
+demo_float = float('215.3')
+print(demo_float)
+
+# Output:
+# 215
+# 215.3
+ Importante
+
+Si usa un valor no válido para int o float, recibirá un error.
+
+Valores absolutos
+En matemáticas, un valor absoluto es el número no negativo sin su signo. El uso de un valor absoluto puede ser útil en situaciones varias, incluido el ejemplo de búsqueda para determinar la distancia entre dos planetas. Considere los cálculos siguientes:
+
+Pitón
+
+Copiar
+39 - 16
+16 - 39
+Observe que la diferencia entre las dos ecuaciones es que los números se invierten. Las respuestas son 23 y -23, respectivamente. Al determinar la distancia entre dos planetas, no importa el orden en el que se escriben los números, ya que la respuesta absoluta es la misma.
+
+Use abs para convertir el valor negativo en su valor absoluto. Si hace la misma operación mediante abs (e imprime las respuestas), verá que muestra 23 para ambas ecuaciones.
+
+Pitón
+
+Copiar
+print(abs(39 - 16))
+print(abs(16 - 39))
+
+# Output
+# 23
+# 23
+Redondeo
+También es útil la función integrada de Python denominada round. Úsela para redondear hacia arriba al entero más cercano si el valor decimal es .5 o mayor, o bien hacia abajo si es menor que .5.
+
+Pitón
+
+Copiar
+print(round(14.5))
+
+# Output: 15
+Biblioteca matemática
+Python tiene bibliotecas para proporcionar operaciones y cálculos más avanzados. Una de las más comunes es la biblioteca math. math permite hacer el redondeo con floor y ceil, proporcionar el valor de pi y muchas otras operaciones. Veamos cómo usar esta biblioteca para redondear hacia arriba o hacia abajo.
+
+El redondeo de números permite quitar la parte decimal de un número de punto flotante. Puede optar por redondear siempre hacia arriba al número entero más cercano si usa ceil, o hacia abajo si usa floor.
+
+Pitón
+
+Copiar
+from math import ceil, floor
+
+round_up = ceil(12.5)
+print(round_up)
+
+round_down = floor(12.5)
+print(round_down)
+
+# Output
+# 13
+# 12

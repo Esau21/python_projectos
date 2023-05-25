@@ -1,0 +1,51 @@
+Introducción
+Completado
+100 XP
+2 minutos
+Como es lógico, el rol de un científico de datos implica principalmente la exploración y el análisis de datos. Los resultados de un análisis pueden constituir la base de un informe o de un modelo de aprendizaje automático, pero todo comienza con los datos, siendo Python el lenguaje de programación más popular entre los científicos de datos.
+
+Tras décadas de desarrollo de código abierto, Python ofrece una amplia funcionalidad con eficaces bibliotecas estadísticas y numéricas:
+
+NumPy y Pandas simplifican el análisis y la manipulación de datos.
+Matplotlib proporciona visualizaciones de datos atractivas.
+Scikit-learn ofrece análisis de datos predictivo sencillo y eficaz.
+TensorFlow y PyTorch suministran funcionalidades de aprendizaje automático y aprendizaje profundo.
+Normalmente, un proyecto de análisis de datos está diseñado para obtener conclusiones sobre un escenario concreto o para probar una hipótesis.
+
+Por ejemplo, supongamos que un profesor universitario recoge datos de sus alumnos, como el número de clases a las que han asistido, las horas de estudio y la nota final obtenida en el examen de fin de curso. El profesor podría analizar los datos para determinar si existe una relación entre la cantidad de estudio que realiza un alumno y la nota final que obtiene. El profesor podría utilizar los datos para comprobar una hipótesis de que solo los alumnos que estudian un número mínimo de horas pueden esperar obtener un aprobado.
+
+Lecture and study time related to student grades
+
+Requisitos previos
+Conocimientos de matemáticas básicas
+Experiencia previa con la programación en Python
+Objetivos de aprendizaje
+En este módulo, aprenderá a:
+
+Tareas comunes de exploración y análisis de datos.
+Uso de paquetes de Python, como NumPy, Pandas y Matplotlib, para analizar los datos
+
+Exploración de datos con NumPy y Pandas
+Completado
+100 XP
+3 minutos
+Los científicos de datos pueden usar diversas herramientas y técnicas para explorar, visualizar y manipular datos. Una de las formas más comunes en las que los científicos de datos trabajan con los datos es mediante el lenguaje de programación Python y algunos paquetes específicos para el procesamiento de datos.
+
+Qué es NumPy
+NumPy es una biblioteca de Python que ofrece una funcionalidad comparable a la de herramientas matemáticas como MATLAB y R. Aunque NumPy simplifica considerablemente la experiencia del usuario, también ofrece funciones matemáticas completas.
+
+Qué es Pandas
+Pandas es una biblioteca de Python muy conocida para el análisis y la manipulación de datos. Pandas es como el Excel de Python: proporciona una funcionalidad fácil de usar para las tablas de datos.
+
+Pandas DF.
+
+Exploración de datos en un cuaderno de Jupyter Notebook
+Los cuadernos de Jupyter Notebooks son una forma conocida de ejecutar scripts básicos mediante el explorador web. Normalmente, estos cuadernos son una sola página web, dividida en secciones de texto y secciones de código que se ejecutan en el servidor en lugar de en la máquina local. Esto significa que puede empezar a trabajar rápidamente sin necesidad de instalar Python u otras herramientas.
+
+Prueba de hipótesis
+La exploración y el análisis de datos suele ser un proceso iterativo en el que el científico de datos toma una muestra de los datos y realiza las siguientes tareas para analizarlos y probar una hipótesis:
+
+Limpiar los datos para controlar errores, valores que faltan y otros problemas.
+Aplicar técnicas estadísticas para comprender mejor los datos y cómo se puede esperar que la muestra represente la población de datos del mundo real, teniendo en cuenta la variación aleatoria.
+Visualizar los datos para determinar las relaciones entre variables y, en el caso de un proyecto de aprendizaje automático, identificar las características que potencialmente se pueden predecir de la etiqueta.
+Revisión de hipótesis y repetición del proceso.

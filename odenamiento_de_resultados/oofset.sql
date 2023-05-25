@@ -1,0 +1,4 @@
+SELECT Name, ListPriceFROM SalesLT.ProductORDER BY Name OFFSET 0 ROWS FETCH NEXT 10 ROWS ONLY;
+
+
+SELECT DISTINCT Color AS colores FROM SalesLT.Product;

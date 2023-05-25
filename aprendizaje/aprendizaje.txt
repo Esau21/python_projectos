@@ -1,0 +1,135 @@
+Tipos de datos
+Una variable asume un tipo de datos. En el programa anterior, sum obtiene el tipo int. Sin embargo, hay muchos más tipos de datos. Probablemente pueda encontrar algunos de los siguientes:
+
+Tipo	Descripción	Por ejemplo
+Tipo numérico	Número, con o sin decimales	int, float, complex, no = 3
+Tipo de texto	Cadena de caracteres	str = "a literal string"
+Tipo booleano	Boolean	continue = True
+
+Hay tipos más complejos, pero vamos a empezar por estos.
+
+Este es un fragmento de código que muestra algunos de los tipos anteriores:
+
+Python
+
+Copiar
+planets_in_solar_system = 8 # int, pluto used to be the 9th planet, but is too small
+distance_to_alpha_centauri = 4.367 # float, lightyears
+can_liftoff = True
+shuttle_landed_on_the_moon = "Apollo 11" #string 
+¿Cómo saber qué tipo tiene algo? Si ve que los datos se asignan a la variable como se muestra en el código siguiente, puede detectarlo:
+
+Python
+
+Copiar
+distance_to_alpha_centauri = 4.367 # looks like a float
+La otra manera es usar la función type():
+
+Python
+
+Copiar
+type(distance_to_alpha_centauri) ## <class 'float'>
+Operadores
+Los operadores permiten realizar varias operaciones en las variables y sus valores. La idea general es que hay un lado izquierdo, un lado derecho y un operador en el medio:
+
+Python
+
+Copiar
+<left side> <operator> <right side>
+Este es el aspecto que tendría un ejemplo real del código de marcador de posición anterior:
+
+Python
+
+Copiar
+left_side = 10
+right_side = 5
+left_side / right_side # 2
+En este ejemplo se usa una barra diagonal (/) para dividir el valor left_side por el valor right_side.
+
+Hay muchos más operadores. En esta unidad se describen algunos aspectos importantes que es probable que encuentre.
+
+Python usa dos tipos de operadores: aritmético y asignación.
+
+Operadores aritméticos
+Con los operadores aritméticos, se hacen cálculos como suma, resta, división y multiplicación. Este es un subconjunto de operadores aritméticos que puede usar:
+
+Tipo	Descripción	Ejemplo
++	Operador de suma que agrega dos valores juntos	1 + 1
+-	Operador de resta que quita el valor del lado derecho del lado izquierdo	1 - 2
+/	Operador de división que divide el lado izquierdo tantas veces como el lado derecho especifica	10 / 2
+*	Operador de multiplicación	2 * 2
+Operadores de asignación
+Puede usar operadores de asignaciónpara asignar valores a una variable a lo largo del ciclo de vida de la variable. Estos son algunos operadores de asignación que es probable que encuentre a medida que aprende a compilar programas:
+
+Operador	Ejemplo
+=	x = 2
+x ahora contiene 2.
++=	x += 2
+x incrementado en 2. Si contenía 2 antes, ahora tiene un valor de 4.
+-=	x -= 2
+x reducido en 2. Si contenía 2 antes, ahora tiene un valor de 0.
+/=	x /= 2
+x dividido por 2. Si contenía 2 antes, ahora tiene un valor de 1.
+*=	x *= 2
+x multiplicado por 2. Si contenía 2 antes, ahora tiene un valor de 4.
+Fechas
+Al compilar programas, es probable que interactúe con fechas. Una fecha en un programa suele indicar tanto la fecha del calendario como la hora.
+
+Puede usar una fecha en varias aplicaciones, como en estos ejemplos:
+
+Archivo de copia de seguridad: El uso de una fecha como parte del nombre de un archivo de copia de seguridad es una buena manera de indicar cuándo se realizó una copia de seguridad y cuándo es necesario realizarla de nuevo.
+Condición: Es posible que quiera llevar una lógica específica cuando haya una fecha determinada.
+Métrica: Las fechas se usan para comprobar el rendimiento del código para, por ejemplo, medir el tiempo necesario para ejecutar una función.
+Para trabajar con una fecha, debe importar el módulo date:
+
+Python
+
+Copiar
+from datetime import date
+A continuación, puede llamar a las funciones con las que quiere trabajar. Para obtener la fecha de hoy, puede llamar a la función today():
+
+Python
+
+Copiar
+date.today()
+Para mostrar la fecha en la consola, puede usar la función print(). La función print() adopta muchos tipos de datos como entrada. Aquí se muestra cómo puede mostrar la fecha de hoy:
+
+Python
+
+Copiar
+print(date.today())
+Conversión de tipos de datos
+Quiere usar una fecha con algo, normalmente una cadena. Si, por ejemplo, desea mostrar la fecha de hoy en la consola, podría experimentar algún problema:
+
+Python
+
+Copiar
+print("Today's date is: " + date.today())
+Lo que se obtiene es un error:
+
+Resultados
+
+Copiar
+Traceback (most recent call last):
+  File "/<path>/program.py", line 4, in <module>
+    print("Today's date" + date.today())
+TypeError: can only concatenate str (not "datetime.date") to str
+La última fila del mensaje le indica cuál es el problema. Está intentando usar el operador + y combinar dos tipos de datos diferentes, una cadena y una fecha.
+
+Para que este código funcione, debe convertir la fecha en una cadena. Para realizar esta conversión, use la función de utilidad str():
+
+Python
+
+Copiar
+print("Today's date is: " + str(date.today()))
+La salida es similar a esta:
+
+Resultados
+
+Copiar
+Today's date is: <date>
+
+
+parsecs = 11
+lightyears = parsecs * 3.26
+print(str(parsecs) + " parsecs is " + str(lightyears) + " lightyears")

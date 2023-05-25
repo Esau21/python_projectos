@@ -1,0 +1,254 @@
+Sugerencia : A medida que sigue las instrucciones de este panel, cada vez que vea un ícono , puede usarlo para copiar texto del panel de instrucciones a la interfaz de la máquina virtual.
+
+Si se le solicita que inicie sesión, inicie sesión en la cuenta de estudiante con la contraseña Pa55w.rd . Si se le solicita que permita que su PC sea detectable, seleccione No .
+
+Introducción a Transact-SQL
+En esta práctica de laboratorio, utilizará algunas consultas SELECT básicas para recuperar datos de la base de datos AdventureWorks .
+
+Explore la base de datos AdventureWorks
+Usaremos la base de datos AdventureWorks en este laboratorio, así que comencemos explorándola en Azure Data Studio.
+
+Inicie Azure Data Studio y, en la pestaña Conexiones , seleccione la conexión AdventureWorks haciendo clic en la flecha justo a la izquierda del nombre. Esto se conectará a la instancia de SQL Server y mostrará los objetos en la base de datos AdventureWorks .
+
+Expanda la carpeta Tablas para ver las tablas que están definidas en la base de datos. Tenga en cuenta que hay algunas tablas en el esquema dbo , pero la mayoría de las tablas están definidas en un esquema llamado SalesLT .
+
+Expanda la tabla SalesLT.Product y luego expanda su carpeta Columnas para ver las columnas en esta tabla. Cada columna tiene un nombre, un tipo de datos, una indicación de si puede contener valores nulos y, en algunos casos, una indicación de que las columnas se utilizan como clave principal (PK) o clave externa (FK).
+
+Haga clic con el botón derecho en la tabla SalesLT.Product y use la opción SELECT TOP (1000) para crear y ejecutar un nuevo script de consulta que recupere las primeras 1000 filas de la tabla.
+
+Revise los resultados de la consulta, que constan de 1000 filas; cada fila representa un producto vendido por la empresa ficticia Adventure Works Cycles .
+
+Cierre el panel SQLQuery_1 que contiene la consulta y sus resultados.
+
+Explore las otras tablas de la base de datos, que contienen información sobre detalles de productos, clientes y pedidos de ventas. Las tablas están relacionadas a través de claves primarias y externas, como se muestra aquí (es posible que deba cambiar el tamaño del panel para verlas claramente):
+
+Un diagrama entidad-relación de la base de datos AdventureWorks
+
+Nota : si está familiarizado con la base de datos de muestra estándar de AdventureWorks , puede notar que en esta práctica de laboratorio estamos usando una versión simplificada que facilita el enfoque en el aprendizaje de la sintaxis de Transact-SQL.
+
+Use consultas SELECT para recuperar datos
+Ahora que ha tenido la oportunidad de explorar la base de datos AdventureWorks , es hora de profundizar un poco más en los datos del producto que contiene consultando la tabla Producto .
+
+En Azure Data Studio, cree una nueva consulta (puede hacerlo desde el menú Archivo o en la página de bienvenida ).
+
+En el nuevo panel SQLQuery_… , asegúrese de que la base de datos AdventureWorks esté seleccionada en la parte superior del panel de consulta. De lo contrario, use el botón Conectar para conectar la consulta a la conexión guardada de AdventureWorks .
+
+En el editor de consultas, ingrese el siguiente código:
+
+SELECT * FROM SalesLT.Product;
+Use el botón ⏵Ejecutar para ejecutar la consulta y, después de unos segundos, revise los resultados, que incluyen todas las columnas para todos los productos.
+
+En el editor de consultas, modifique la consulta de la siguiente manera:
+
+SELECT Name, StandardCost, ListPrice
+FROM SalesLT.Product;
+Use el botón ⏵Ejecutar para volver a ejecutar la consulta y, después de unos segundos, revise los resultados, que esta vez incluyen solo las columnas Nombre , Costo estándar y Precio de lista para todos los productos.
+
+Modifique la consulta como se muestra a continuación para incluir una expresión que resulte en una columna calculada y luego vuelva a ejecutar la consulta:
+
+SELECT Name, ListPrice - StandardCost
+FROM SalesLT.Product;
+Tenga en cuenta que los resultados esta vez incluyen la columna Name y una columna sin nombre que contiene el resultado de restar StandardCost de ListPrice .
+
+Modifique la consulta como se muestra a continuación para asignar nombres a las columnas en los resultados y luego vuelva a ejecutar la consulta.
+
+SELECT Name AS ProductName, ListPrice - StandardCost AS Markup
+FROM SalesLT.Product;
+Tenga en cuenta que los resultados ahora incluyen columnas denominadas ProductName y Markup . Se ha utilizado la palabra clave AS para asignar un alias a cada columna de los resultados.
+
+Reemplace la consulta existente con el siguiente código, que también incluye una expresión que genera una columna calculada en los resultados:
+
+SELECT ProductNumber, Color, Size, Color + ', ' + Size AS ProductDetails
+FROM SalesLT.Product;
+Ejecute la consulta y tenga en cuenta que el operador + en la columna calculada ProductDetails se usa para concatenar los valores de la columna Color y Size (con una coma literal entre ellos). El comportamiento de este operador está determinado por los tipos de datos de las columnas: si hubieran sido valores numéricos, el operador + los habría agregado . Tenga en cuenta también que algunos resultados son NULL ; exploraremos los valores NULL más adelante en este laboratorio.
+
+Trabajar con tipos de datos
+Como acaba de ver, las columnas de una tabla se definen como tipos de datos específicos, lo que afecta las operaciones que puede realizar en ellas.
+
+Reemplace la consulta existente con el siguiente código y ejecútelo:
+
+SELECT ProductID + ': ' + Name AS ProductName
+FROM SalesLT.Product; 
+Tenga en cuenta que esta consulta devuelve un error. El operador + se puede usar para concatenar valores basados ​​en texto o agregar valores numéricos; pero en este caso hay un valor numérico ( ProductID ) y un valor basado en texto ( Name ), por lo que no está claro cómo se debe aplicar el operador.
+
+Modifique la consulta de la siguiente manera y vuelva a ejecutarla:
+
+SELECT CAST(ProductID AS varchar(5)) + ': ' + Name AS ProductName
+FROM SalesLT.Product; 
+Tenga en cuenta que el efecto de la función CAST es cambiar la columna ProductID numérica en un valor varchar (datos de caracteres de longitud variable) que se puede concatenar con otros valores basados ​​en texto.
+
+Modifique la consulta para reemplazar la función CAST con una función CONVERT como se muestra a continuación, y luego vuelva a ejecutarla:
+
+SELECT CONVERT(varchar(5), ProductID) + ': ' + Name AS ProductName
+FROM SalesLT.Product; 
+Tenga en cuenta que los resultados de usar CONVERT son los mismos que para CAST . La función CAST es una parte estándar ANSI del lenguaje SQL que está disponible en la mayoría de los sistemas de bases de datos, mientras que CONVERT es una función específica de SQL Server.
+
+Otra diferencia clave entre las dos funciones es que CONVERTIR incluye un parámetro adicional que puede ser útil para dar formato a los valores de fecha y hora al convertirlos en datos basados ​​en texto. Por ejemplo, reemplace la consulta existente con el siguiente código y ejecútelo.
+
+SELECT SellStartDate,
+   CONVERT(nvarchar(30), SellStartDate) AS ConvertedDate,
+   CONVERT(nvarchar(30), SellStartDate, 126) AS ISO8601FormatDate
+FROM SalesLT.Product; 
+Reemplace la consulta existente con el siguiente código y ejecútelo.
+
+SELECT Name, CAST(Size AS Integer) AS NumericSize
+FROM SalesLT.Product; 
+Tenga en cuenta que se devuelve un error porque algunos valores de Tamaño no son numéricos (por ejemplo, algunos tamaños de elementos se indican como S , M o L ).
+
+Modifique la consulta para usar una función TRY_CAST , como se muestra aquí.
+
+SELECT Name, TRY_CAST(Size AS Integer) AS NumericSize
+FROM SalesLT.Product; 
+Ejecute la consulta y tenga en cuenta que los valores de tamaño numérico se convierten correctamente en números enteros, pero que los tamaños no numéricos se devuelven como NULL .
+
+Manejar valores NULL
+Hemos visto algunos ejemplos de consultas que devuelven valores NULL . NULL se usa generalmente para denotar un valor que es desconocido . Tenga en cuenta que esto no es lo mismo que decir que el valor es ninguno , ¡eso implicaría que sabe que el valor es cero o una cadena vacía!
+
+Modifique la consulta existente como se muestra aquí:
+
+SELECT Name, ISNULL(TRY_CAST(Size AS Integer),0) AS NumericSize
+FROM SalesLT.Product;
+Ejecute la consulta y vea los resultados. Tenga en cuenta que la función ISNULL reemplaza los valores NULL con el valor especificado, por lo que en este caso, los tamaños que no son numéricos (y, por lo tanto, no se pueden convertir en números enteros) se devuelven como 0 .
+
+En este ejemplo, la función ISNULL se aplica a la salida de la función TRY_CAST interna , pero también puede usarla para manejar valores NULL en la tabla de origen.
+
+Reemplace la consulta con el siguiente código para manejar valores NULL para los valores de Color y Tamaño en la tabla de origen:
+
+SELECT ProductNumber, ISNULL(Color, '') + ', ' + ISNULL(Size, '') AS ProductDetails
+FROM SalesLT.Product;
+La función ISNULL reemplaza los valores NULL con un valor literal especificado. A veces, es posible que desee lograr el resultado opuesto reemplazando un valor explícito con NULL . Para hacer esto, puede usar la función NULLLIF .
+
+Pruebe la siguiente consulta, que reemplaza el valor de color "Multi" a NULL .
+
+SELECT Name, NULLIF(Color, 'Multi') AS SingleColor
+FROM SalesLT.Product;
+En algunos escenarios, es posible que desee comparar varias columnas y encontrar la primera que no sea NULL . Por ejemplo, suponga que desea realizar un seguimiento del estado de disponibilidad de un producto en función de las fechas registradas cuando se ofreció a la venta por primera vez o se retiró de la venta. Un producto que está actualmente disponible tendrá un SellStartDate , pero el valor de SellEndDate será NULL . Cuando un producto ya no se vende, se ingresa una fecha en su columna SellEndDate . Para encontrar la primera columna que no sea NULL , puede usar la función COALESCE .
+
+Utilice la siguiente consulta para encontrar la primera fecha no NULL para el estado de venta del producto.
+
+SELECT Name, COALESCE(SellEndDate, SellStartDate) AS StatusLastUpdated
+FROM SalesLT.Product;
+La consulta anterior devuelve la última fecha en la que se actualizó el estado de venta del producto, pero en realidad no nos dice el estado de venta en sí. Para determinar eso, necesitaremos verificar las fechas para ver si SellEndDate es NULL . Para hacer esto, puede usar una expresión CASE en la cláusula SELECT para buscar valores NULL SellEndDate . La expresión CASE tiene dos variantes: un CASE simple que evalúa una columna o valor específico, o un CASE buscado que evalúa una o más expresiones.
+
+En este ejemplo, o la experiencia de CASE debe determinar si la columna SellEndDate es NULL . Por lo general, cuando intenta verificar el valor de una columna, puede usar el operador = ; por ejemplo, el predicado SellEndDate = '01/01/2005' devuelve True si el valor de SellEndDate es 01/01/2005 y False en caso contrario. Sin embargo, cuando se trata de valores NULL , es posible que el comportamiento predeterminado no sea el esperado. Recuerde que NULL en realidad significa unknown , por lo que usar =operador para comparar dos valores desconocidos siempre da como resultado un valor NULL ; semánticamente, es imposible saber si un valor desconocido es igual a otro. Para verificar si un valor es NULL , debe usar el predicado IS NULL ; y, a la inversa, para verificar que un valor no sea NULL , puede usar el predicado IS NOT NULL .
+
+Ejecute la siguiente consulta, que incluye CASE buscado que usa una expresión IS NULL para verificar valores NULL SellEndDate .
+
+SELECT Name,
+    CASE
+        WHEN SellEndDate IS NULL THEN 'Currently for sale'
+        ELSE 'No longer available'
+    END AS SalesStatus
+FROM SalesLT.Product;
+La consulta anterior utilizó una expresión CASE buscada , que comienza con una palabra clave CASE e incluye una o más expresiones WHEN…THEN con los valores y predicados que se van a verificar. Una expresión ELSE proporciona un valor para usar si ninguna de las condiciones WHEN coincide, y la palabra clave END denota el final de la expresión CASE , que tiene un alias para un nombre de columna para el resultado usando una expresión AS .
+
+En algunas consultas, es más apropiado usar una expresión CASE simple que aplica múltiples predicciones WHERE…THEN al mismo valor.
+
+Ejecute la siguiente consulta para ver un ejemplo de una expresión CASE simple que produjo diferentes resultados según el valor de la columna Tamaño .
+
+SELECT Name,
+    CASE Size
+        WHEN 'S' THEN 'Small'
+        WHEN 'M' THEN 'Medium'
+        WHEN 'L' THEN 'Large'
+        WHEN 'XL' THEN 'Extra-Large'
+        ELSE ISNULL(Size, 'n/a')
+    END AS ProductSize
+FROM SalesLT.Product;
+Revise los resultados de la consulta y observe que la columna ProductSize contiene la descripción basada en texto del tamaño para los tamaños S , M , L y XL ; el valor de medición para tamaños numéricos y n/a para cualquier otro valor de tamaño.
+
+Desafíos
+Ahora que ha visto algunos ejemplos de declaraciones SELECT que recuperan datos de una tabla, es hora de intentar redactar algunas consultas propias.
+
+Sugerencia : intente determinar las consultas adecuadas para usted. Si se queda atascado, las respuestas sugeridas se proporcionan al final de este laboratorio.
+
+Desafío 1: recuperar datos de clientes
+Adventure Works Cycles vende directamente a minoristas, quienes luego venden productos a los consumidores. Cada minorista que es cliente de Adventure Works ha proporcionado un contacto designado para todas las comunicaciones de Adventure Works. El gerente de ventas de Adventure Works le ha pedido que genere algunos informes que contengan detalles de los clientes de la empresa para respaldar una campaña de ventas directas.
+
+Recuperar detalles del cliente
+Familiarícese con la tabla SalesLT.Customer escribiendo una consulta Transact-SQL que recupere todas las columnas de todos los clientes.
+Recuperar datos de nombre de cliente
+Cree una lista de todos los nombres de contacto de los clientes que incluya el título, el nombre, el segundo nombre (si corresponde), el apellido y el sufijo (si corresponde) de todos los clientes.
+Recuperar nombres de clientes y números de teléfono
+Cada cliente tiene un vendedor asignado. Debe escribir una consulta para crear una hoja de llamada que enumere:
+El vendedor
+Una columna llamada CustomerName que muestra cómo se debe saludar al contacto del cliente (por ejemplo, Sr. Smith )
+El número de teléfono del cliente.
+Desafío 2: recuperar datos de pedidos de clientes
+A medida que continúa trabajando con los datos de los clientes de Adventure Works, debe crear consultas para los informes que ha solicitado el equipo de ventas.
+
+Recuperar una lista de empresas cliente
+Se le ha pedido que proporcione una lista de todas las empresas de clientes con el formato ID de cliente : Nombre de la empresa , por ejemplo, 78: Bicicletas preferidas .
+Recuperar una lista de revisiones de órdenes de venta
+La tabla SalesLT.SalesOrderHeader contiene registros de pedidos de ventas. Se le ha pedido que recupere datos para un informe que muestra:
+El número de orden de venta y el número de revisión en el formato() – por ejemplo SO71774 (2).
+La fecha del pedido convertida al formato estándar ANSI 102 ( yyyy.mm.dd , por ejemplo , 2015.01.31 ).
+Desafío 3: Recuperar los datos de contacto del cliente
+Algunos registros de la base de datos incluyen valores faltantes o desconocidos que se devuelven como NULL. Debe crear algunas consultas que manejen estos valores NULL adecuadamente.
+
+Recuperar los nombres de contacto del cliente con segundo nombre si se conoce
+
+Se le ha pedido que escriba una consulta que devuelva una lista de nombres de clientes. La lista debe constar de una sola columna en el formato penúltimo (por ejemplo , Keith Harris ) si se desconoce el segundo nombre, o penúltimo (por ejemplo, Jane M. Gates ) si se conoce el segundo nombre.
+Recuperar los datos de contacto principales
+
+Los clientes pueden proporcionar a Adventure Works una dirección de correo electrónico, un número de teléfono o ambos. Si hay una dirección de correo electrónico disponible, debe usarse como método de contacto principal; si no, entonces se debe usar el número de teléfono. Debe escribir una consulta que devuelva una lista de ID de clientes en una columna y una segunda columna denominada Contacto principal que contenga la dirección de correo electrónico si se conoce y, de lo contrario, el número de teléfono.
+
+IMPORTANTE : En los datos de muestra proporcionados, no hay registros de clientes sin una dirección de correo electrónico. Por lo tanto, para verificar que su consulta funcione como se espera, ejecute la siguiente declaración de ACTUALIZACIÓN para eliminar algunas direcciones de correo electrónico existentes antes de crear su consulta:
+
+UPDATE SalesLT.Customer
+SET EmailAddress = NULL
+WHERE CustomerID % 7 = 1;
+Recuperar estado de envío
+
+Se le ha pedido que cree una consulta que devuelva una lista de ID de pedidos de ventas y fechas de pedidos con una columna llamada Estado de envío que contiene el texto Enviado para pedidos con una fecha de envío conocida y En espera de envío para pedidos sin fecha de envío.
+
+IMPORTANTE : En los datos de muestra provistos, no hay registros de encabezado de orden de venta sin fecha de envío. Por lo tanto, para verificar que su consulta funcione como se esperaba, ejecute la siguiente instrucción UPDATE para eliminar algunas fechas de envío existentes antes de crear su consulta.
+
+UPDATE SalesLT.SalesOrderHeader
+SET ShipDate = NULL
+WHERE SalesOrderID > 71899;
+Soluciones de desafío
+Esta sección contiene soluciones sugeridas para las consultas de desafío.
+
+Desafío 1
+Recuperar datos del cliente:
+
+SELECT * FROM SalesLT.Customer;
+Recuperar datos de nombre de cliente:
+
+SELECT Title, FirstName, MiddleName, LastName, Suffix
+FROM SalesLT.Customer;
+Recuperar nombres de clientes y números de teléfono:
+
+SELECT Salesperson, Title + ' ' + LastName AS CustomerName, Phone
+FROM SalesLT.Customer;
+Desafío 2
+Recuperar una lista de empresas clientes:
+
+SELECT CAST(CustomerID AS varchar) + ': ' + CompanyName AS CustomerCompany
+FROM SalesLT.Customer;
+Recuperar una lista de revisiones de órdenes de venta:
+
+SELECT SalesOrderNumber + ' (' + STR(RevisionNumber, 1) + ')' AS OrderRevision,
+   CONVERT(nvarchar(30), OrderDate, 102) AS OrderDate
+FROM SalesLT.SalesOrderHeader;
+Desafío 3:
+Recuperar los nombres de contacto del cliente con segundo nombre si se conoce:
+
+SELECT FirstName + ' ' + ISNULL(MiddleName + ' ', '') + LastName AS CustomerName
+FROM SalesLT.Customer;
+Recuperar los datos de contacto principales:
+
+SELECT CustomerID, COALESCE(EmailAddress, Phone) AS PrimaryContact
+FROM SalesLT.Customer;
+Recuperar estado de envío:
+
+SELECT SalesOrderID, OrderDate,
+    CASE
+        WHEN ShipDate IS NULL THEN 'Awaiting Shipment'
+        ELSE 'Shipped'
+    END AS ShippingStatus
+FROM SalesLT.SalesOrderHeader;
+Volver a Microsoft Learn
+Cuando haya terminado el ejercicio, complete la verificación de conocimientos en Microsoft Learn.
+Cuando el enlace anterior se abra en otra pestaña del navegador, vuelva a esta para finalizar el entorno de laboratorio.

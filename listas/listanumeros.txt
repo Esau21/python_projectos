@@ -1,0 +1,61 @@
+Trabajo con números en listas
+Completado
+100 EXP
+1 minuto
+Hasta ahora, ha estado usando nombres de planetas en una lista. Es posible que se pregunte si trabaja con otros tipos de datos, como números.
+
+¿Sabía que la gravedad en otros planetas es más fuerte o más débil en función de la masa o el tamaño del planeta? La gravedad a menudo se mide en G, donde la gravedad en la Tierra es 1 y otros planetas se miden en relación con la Tierra.
+
+La gravedad en la Luna es de 0,166 G, por este motivo los astronautas pueden saltar tan alto sobre la Luna. La gravedad en Neptuno es de 1,12 G, por lo que saltar es más difícil. Incluso los grandes atletas tendrían dificultades para saltar más de 2 metros en Neptuno.
+
+Neptuno visto desde la Voyager 2 a 7 millones de kilómetros, imagen de la NASA.
+
+Almacenamiento de números en listas
+Para almacenar números con decimales en Python, se debe usar el tipo float. Para crear un valor float, escriba el número con la posición decimal y asígnelo a una variable:
+
+Pitón
+
+Copiar
+gravity_on_earth = 1.0
+gravity_on_the_moon = 0.166
+El código siguiente crea una lista en la que se muestran las fuerzas de los ocho planetas del sistema solar, en G:
+
+Pitón
+
+Copiar
+gravity_on_planets = [0.378, 0.907, 1, 0.377, 2.36, 0.916, 0.889, 1.12]
+En esta lista, gravity_on_planets[0] es la gravedad en Mercurio (0,378 G), gravity_on_planets[1] es la gravedad en Venus (0,907 G), y así sucesivamente.
+
+En la Tierra, un autobús de dos pisos pesa 12 650 kilogramos (kg), es decir, 12,65 toneladas. En Mercurio, donde la gravedad es de 0,378 G, el mismo autobús pesa 12,65 toneladas multiplicado por 0,378. En Python, para multiplicar dos valores, se usa el símbolo *.
+
+En el ejemplo siguiente, puede averiguar el peso de un autobús de dos pisos en diferentes planetas obteniendo el valor de la lista:
+
+Pitón
+
+Copiar
+bus_weight = 12650 # in kilograms, on Earth
+
+print("On Earth, a double-decker bus weighs", bus_weight, "kg")
+print("On Mercury, a double-decker bus weighs", bus_weight * gravity_on_planets[0], "kg")
+
+# Output
+# On Earth, a double-decker bus weighs 12650 kg
+# On Mercury, a double-decker bus weighs 4781.7 kg
+Uso de min() y max() con listas
+Python tiene funciones integradas para calcular los números más grandes y más pequeños de una lista. La función max() devuelve el número más grande y min() devuelve el más pequeño. Por lo tanto, min(gravity_on_planets) devuelve el número más pequeño de la lista gravity_on_planets, que es 0,377 (Marte).
+
+El código siguiente calcula los pesos mínimo y máximo en el sistema solar mediante esas funciones:
+
+Pitón
+
+Copiar
+bus_weight = 12650 # in kilograms, on Earth
+
+print("On Earth, a double-decker bus weighs", bus_weight, "kg")
+print("The lightest a bus would be in the solar system is", bus_weight * min(gravity_on_planets), "kg")
+print("The heaviest a bus would be in the solar system is", bus_weight * max(gravity_on_planets), "kg")
+
+# Output
+# On Earth, a double-decker bus weighs 12650 kg
+# The lightest a bus would be in the solar system is 4769.05 kg
+# The heaviest a bus would be in the solar system is 29854 kg

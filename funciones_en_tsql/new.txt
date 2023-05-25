@@ -1,0 +1,241 @@
+Utilizar funciones de clasificación y conjunto de filas
+Completado
+100 XP
+3 minutos
+Las funciones de clasificación y conjunto de filas no son funciones escalares porque no devuelven un solo valor. Estas funciones aceptan un conjunto de filas como entrada y devuelven un conjunto de filas como salida.
+
+Funciones de categoría
+Las funciones de clasificación permiten realizar cálculos en un conjunto de filas definido por el usuario. Estas funciones incluyen funciones de clasificación, desplazamiento, agregado y distribución.
+
+En este ejemplo se usa la función RANK para calcular una clasificación basada en ListPrice, con el precio más alto clasificado en 1:
+
+SQL
+
+Copiar
+SELECT TOP 100 ProductID, Name, ListPrice,
+RANK() OVER(ORDER BY ListPrice DESC) AS RankByPrice
+FROM Production.Product AS p
+ORDER BY RankByPrice;
+Los resultados de la consulta pueden tener este aspecto:
+
+ProductID
+
+Nombre
+
+ListPrice
+
+RankByPrice
+
+749
+
+Road-150 Red, 62
+
+3578,27
+
+1
+
+750
+
+Road-150 Red, 44
+
+3578,27
+
+1
+
+751
+
+Road-150 Red, 48
+
+3578,27
+
+1
+
+771
+
+Mountain-100 Silver, 38
+
+3399,99
+
+4
+
+772
+
+Mountain-100 Silver, 42
+
+3399,99
+
+4
+
+775
+
+Mountain-100 Black, 38
+
+3374,99
+
+6
+
+...
+
+...
+
+...
+
+...
+
+OVER
+Puede usar la cláusula OVER para definir particiones o agrupaciones dentro de los datos. Por ejemplo, la consulta siguiente amplía el ejemplo anterior para calcular las clasificaciones basadas en precios de los productos dentro de cada categoría.
+
+SQL
+
+Copiar
+SELECT c.Name AS Category, p.Name AS Product, ListPrice,
+  RANK() OVER(PARTITION BY c.Name ORDER BY ListPrice DESC) AS RankByPrice
+FROM Production.Product AS p
+JOIN Production.ProductCategory AS c
+ON p.ProductCategoryID = c.ProductcategoryID
+ORDER BY Category, RankByPrice;
+Los resultados de esta consulta podrían tener un aspecto parecido al siguiente:
+
+Category
+
+Producto
+
+ListPrice
+
+RankByPrice
+
+Pantalones de ciclismo
+
+Pantalones de ciclismo, S
+
+89,99
+
+1
+
+Pantalones de ciclismo
+
+Pantalones de ciclismo, M
+
+89,99
+
+1
+
+Bastidores de bicicletas
+
+Bastidores de bicicletas, 4 bicicletas
+
+120
+
+1
+
+Soportes de bicicletas
+
+All-Purpose Bike Stand
+
+159
+
+1
+
+Bidones y soportes
+
+Mountain Bottle Cage
+
+9,99
+
+1
+
+Bidones y soportes
+
+Road Bottle Cage
+
+8,99
+
+2
+
+Bidones y soportes
+
+Water Bottle - 30 oz.
+
+4,99
+
+3
+
+Ejes pedalier
+
+Ejes pedalier HL
+
+121,49
+
+1
+
+Ejes pedalier
+
+Ejes pedalier ML
+
+101,24
+
+2
+
+Ejes pedalier
+
+Ejes pedalier LL
+
+53,99
+
+3
+
+...
+
+...
+
+...
+
+...
+
+ Nota
+
+Observe que varias filas tienen el mismo valor de clasificación y que se han omitido algunos valores. Esto se debe a que solo estamos usando RANK. En función del requisito, es posible que quiera evitar vínculos con el mismo valor de clasificación. Puede controlar el valor de clasificación con otras funciones, DENSE_RANK, NTILE y ROW_NUMBER, según sea necesario. Para obtener más información sobre estas funciones, consulte la documentación de referencia de Transact-SQL.
+
+Funciones de conjuntos de filas
+Las funciones de conjunto de filas devuelven una tabla virtual que se puede usar en la cláusula FROM como origen de datos. Estas funciones toman parámetros específicos de la propia función de conjunto de filas. Incluyen OPENDATASOURCE, OPENQUERY, OPENROWSET, OPENXML y OPENJSON.
+
+Las funciones OPENDATASOURCE, OPENQUERY y OPENROWSET permiten pasar una consulta a un servidor de bases de datos remoto. A continuación, el servidor remoto devolverá un conjunto de filas de resultados. Por ejemplo, la consulta siguiente usa OPENROWSET para obtener los resultados de una consulta de una instancia de SQL Server llamada SalesDB.
+
+SQL
+
+Copiar
+SELECT a.*
+FROM OPENROWSET('SQLNCLI', 'Server=SalesDB;Trusted_Connection=yes;',
+    'SELECT Name, ListPrice
+    FROM AdventureWorks.Production.Product') AS a;
+Para usar servidores remotos, debe habilitar algunas opciones avanzadas en la instancia de SQL Server en la que se ejecuta la consulta.
+
+Las funciones OPENXML y OPENJSON permiten consultar datos estructurados en formato XML o JSON y extraer valores en un conjunto de filas tabular.
+
+En este módulo no entraremos en detalle en las funciones de conjunto de filas. Para obtener más información, consulte la documentación de referencia de Transact-SQL.
+
+Filtro de grupos con HAVING
+Completado
+100 XP
+3 minutos
+Cuando haya creado grupos con una cláusula GROUP BY, puede filtrar aún más los resultados. La cláusula HAVING actúa como filtro en los grupos. Esto es similar a la forma en que la cláusula WHERE actúa como filtro en las filas devueltas por la cláusula FROM.
+
+Una cláusula HAVING permite crear una condición de búsqueda, conceptualmente similar al predicado de una cláusula WHERE, que luego prueba cada grupo devuelto por la cláusula GROUP BY.
+
+En el ejemplo siguiente se cuentan los pedidos de cada cliente y se filtran los resultados para incluir solo los clientes que han realizado más de 10 pedidos:
+
+SQL
+
+Copiar
+SELECT CustomerID,
+      COUNT(*) AS OrderCount
+FROM Sales.SalesOrderHeader
+GROUP BY CustomerID
+HAVING COUNT(*) > 10;
+Comparación de HAVING con WHERE
+Mientras que las cláusulas HAVING y WHERE filtran los datos, recuerde que WHERE funciona en las filas devueltas por la cláusula FROM. Si la sección GROUP BY ... HAVING existe en la consulta después de una cláusula WHERE, la cláusula WHERE filtrará las filas antes de que se procese GROUP BY, lo que podría limitar los grupos que se pueden crear.
+
+Una cláusula HAVING se procesa después de GROUP BY y solo funciona en grupos, no en filas de detalles. En resumen:
+
+Una cláusula WHERE filtra las filas antes de formar grupos
+Una cláusula HAVING filtra grupos completos y normalmente examina los resultados de una agregación.

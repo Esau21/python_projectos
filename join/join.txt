@@ -1,0 +1,288 @@
+Descripción de los conceptos y la sintaxis de las combinaciones
+Completado
+100 XP
+3 minutos
+El método más fundamental y común para combinar datos de varias tablas consiste en usar una operación JOIN. Algunas usuarios creen que JOIN es una cláusula independiente en una instrucción SELECT, pero otros la consideran parte de la cláusula FROM. En este módulo, se considerará principalmente parte de la cláusula FROM. En este módulo, se describirá cómo la cláusula FROM de una instrucción SELECT de T-SQL crea tablas virtuales intermedias que se consumirán en fases posteriores de la consulta.
+
+La cláusula FROM y las tablas virtuales
+Si conoce el orden lógico de las operaciones que se realizan cuando SQL Server procesa una consulta, sabe que la cláusula FROM de una instrucción SELECT es la primera que se procesa. Esta cláusula determina qué tabla o tablas serán el origen de las filas de la consulta. FROM puede hacer referencia a una sola tabla o reunir varias tablas como origen de datos para la consulta. Puede pensar en la cláusula FROM como lo que crea y rellena una tabla virtual. Esta tabla virtual contendrá la salida de la cláusula FROM y la usarán las cláusulas de la instrucción SELECT que se apliquen más adelante, como la cláusula WHERE. A medida que agrega funcionalidad adicional a una cláusula FROM, como operadores de combinación, será útil pensar que los elementos de la cláusula FROM agregan o quitan filas de la tabla virtual.
+
+La tabla virtual creada por una cláusula FROM es solo una entidad lógica. En SQL Server, no se crea ninguna tabla física, ni persistente ni temporal, para contener los resultados de la cláusula FROM, ya que se pasa a la cláusula WHERE u otros elementos de la consulta.
+
+La tabla virtual creada por la cláusula FROM contiene datos de todas las tablas combinadas. Puede ser útil pensar en los resultados como conjuntos y conceptualizar los resultados de la combinación como un diagrama de Venn.
+
+A Venn diagram showing the set of an Employee table joined to a SalesOrder table
+
+A lo largo de su historia, el lenguaje T-SQL se ha expandido para reflejar los cambios en los estándares del American National Standards Institute (ANSI) para el lenguaje SQL. Uno de los puntos más importantes donde se aprecian estos cambios es en la sintaxis de las combinaciones de una cláusula FROM. En el estándar ANSI SQL-89, las combinaciones se especifican mediante la inclusión de varias tablas en la cláusula FROM en una lista separada por comas. Cualquier filtrado para determinar qué filas se incluyen se realiza en la cláusula WHERE, de la siguiente manera:
+
+SQL
+
+Copiar
+SELECT p.ProductID, m.Name AS Model, p.Name AS Product
+FROM SalesLT.Product AS p, SalesLT.ProductModel AS m
+WHERE p.ProductModelID = m.ProductModelID;
+Esta sintaxis sigue siendo compatible con SQL Server, pero debido a la complejidad de representar los filtros para combinaciones complejas, no se recomienda. Además, si se omite accidentalmente una cláusula WHERE, las combinaciones de estilo ANSI SQL-89 pueden convertirse fácilmente en productos cartesianos y devolver un número excesivo de filas de resultados, lo que genera problemas de rendimiento y posiblemente resultados incorrectos.
+
+Al aprender a escribir consultas de varias tablas en T-SQL, es importante comprender el concepto de productos cartesianos. En matemáticas, un producto cartesiano es el producto de dos conjuntos. El producto de un conjunto de dos elementos y otro de seis es un conjunto de 12 elementos (6 x 2). Cada uno de los elementos de un conjunto se combina con los del otro. En el ejemplo siguiente, hay un conjunto de nombres con dos elementos y un conjunto de productos con tres. El producto cartesiano combina cada nombre con cada producto, lo que genera seis elementos.
+
+Cartesian product
+
+En las bases de datos, un producto cartesiano es el resultado de combinar cada una de las fila de una tabla con las de otra. El producto de una tabla con 10 filas y otra con 100 es un conjunto de resultados con 1000 filas. El resultado subyacente de una operación JOIN es un producto cartesiano, pero para la mayoría de las consultas de T-SQL, un producto cartesiano no es el resultado deseado. En T-SQL, un producto cartesiano se produce cuando dos tablas de entrada se combinan sin tener en cuenta ninguna relación entre ellas. Sin información sobre las relaciones, el procesador de consultas de SQL Server devolverá todas las combinaciones de filas posibles. Aunque este resultado puede tener algunas aplicaciones prácticas, como la generación de datos de prueba, no suele ser útil y puede tener graves implicaciones en el rendimiento.
+
+Con la aparición del estándar ANSI SQL-92, se ha agregado compatibilidad con las palabras clave JOIN y ON. T-SQL también admite esta sintaxis. Las combinaciones se representan en la cláusula FROM mediante el operador JOIN adecuado. La relación lógica entre las tablas, que se convierte en un predicado de filtro, se especifica en la cláusula ON.
+
+En el ejemplo siguiente se vuelve a formular la consulta anterior con la sintaxis más reciente:
+
+SQL
+
+Copiar
+SELECT p.ProductID, m.Name AS Model, p.Name AS Product
+FROM SalesLT.Product AS p
+JOIN SalesLT.ProductModel AS m
+    ON p.ProductModelID = m.ProductModelID;
+ Nota
+
+La sintaxis de ANSI SQL-92 dificulta la creación de productos cartesianos accidentales. Una vez que se ha agregado la palabra clave JOIN, se producirá un error de sintaxis si falta una cláusula ON, a menos que JOIN se especifique como CROSS JOIN.
+
+
+Uso de combinaciones internas
+Completado
+100 XP
+6 minutos
+El tipo más frecuente de operación JOIN en las consultas T-SQL es INNER JOIN. Las combinaciones internas se usan para resolver muchos problemas empresariales comunes, especialmente en entornos de base de datos muy normalizados. Para recuperar datos que se han almacenado en varias tablas, a menudo tendrá que combinarlos mediante consultas INNER JOIN. INNER JOIN comienza su fase de procesamiento lógico como un producto cartesiano y después se filtra para quitar las filas que no coinciden con el predicado.
+
+Procesamiento de INNER JOIN
+Ahora se examinarán los pasos por los que SQL Server procesará lógicamente una consulta JOIN. En el ejemplo hipotético siguiente se agregan números de línea para mayor claridad:
+
+SQL
+
+Copiar
+1) SELECT emp.FirstName, ord.Amount
+2) FROM HR.Employee AS emp 
+3) JOIN Sales.SalesOrder AS ord
+4)      ON emp.EmployeeID = ord.EmployeeID;
+Como debería saber, la cláusula FROM se procesará antes que la cláusula SELECT. Se realizará el seguimiento del procesamiento, empezando por la línea 2:
+
+La cláusula FROM especifica HR.Employee como una de las tablas de entrada, y le asigna el alias emp.
+El operador JOIN de la línea 3 refleja el uso de INNER JOIN (el tipo predeterminado en T-SQL) y especifica Sales.SalesOrder como la otra tabla de entrada, que tiene un alias de ord.
+SQL Server realizará una combinación cartesiana lógica en estas tablas y pasará los resultados como una tabla virtual al paso siguiente. (Es posible que el procesamiento físico de la consulta no realice realmente la operación del producto cartesiano, en función de las decisiones del optimizador. Pero puede resultar útil imaginar el producto cartesiano que se está creando).
+Con la cláusula ON, SQL Server filtrará la tabla virtual y solo mantendrá aquellas filas en las que un valor EmployeeID de la tabla emp coincida con un valor EmployeeID de la tabla ord.
+Las filas restantes se dejan en la tabla virtual y se entregan al paso siguiente en la instrucción SELECT. En este ejemplo, la tabla virtual se procesa a continuación mediante la cláusula SELECT y las dos columnas especificadas se devuelven a la aplicación cliente.
+El resultado de la consulta completada es una lista de empleados y las cantidades de sus pedidos. Los empleados que no tienen ningún pedido asociado se han filtrado por la cláusula ON, al igual que los pedidos que tienen un valor EmployeeID que no se corresponde con una entrada en la tabla HR.Employee.
+
+A Venn diagram showing the matching members of the Employee and SalesOrder sets
+
+Sintaxis de INNER JOIN
+INNER JOIN es el tipo predeterminado de operación JOIN y la palabra clave INNER opcional está implícita en la cláusula JOIN. Al mezclar tipos de combinación, puede ser útil especificar el tipo de combinación de forma explícita, como se muestra en este ejemplo hipotético:
+
+SQL
+
+Copiar
+SELECT emp.FirstName, ord.Amount
+FROM HR.Employee AS emp 
+INNER JOIN Sales.SalesOrder AS ord
+    ON emp.EmployeeID = ord.EmployeeID;
+Al escribir consultas mediante combinaciones internas, tenga en cuenta las instrucciones siguientes:
+
+Se prefieren alias de tabla, no solo para la lista SELECT, sino también para escribir la cláusula ON.
+Las combinaciones internas se pueden realizar en una sola columna coincidente, como OrderID, o bien en varios atributos coincidentes, como la combinación de OrderID y ProductID. Las combinaciones que especifican varias columnas coincidentes se denominan combinaciones compuestas.
+El orden de enumeración de las tablas en la cláusula FROM de una operación INNER JOIN no es importante para el optimizador de SQL Server. Conceptualmente, las combinaciones se evaluarán de izquierda a derecha.
+Use la palabra clave JOIN una vez para cada par de tablas combinadas de la lista FROM. Para una consulta de dos tablas, especifique una combinación. Para una consulta de tres tablas, usará JOIN dos veces; una vez entre las dos primeras tablas y una segunda entre la salida de JOIN entre las dos primeras tablas y la tercera.
+Ejemplos de INNER JOIN
+En el ejemplo hipotético siguiente se realiza una combinación en una sola columna coincidente, lo que relaciona ProductModelID de la tabla Production.Product con ProductModelID de la tabla Production.ProductModel:
+
+SQL
+
+Copiar
+SELECT p.ProductID, m.Name AS Model, p.Name AS Product
+FROM Production.Product AS p
+INNER JOIN Production.ProductModel AS m
+    ON p.ProductModelID = m.ProductModelID
+ORDER BY p.ProductID;
+En el ejemplo siguiente se muestra cómo se puede extender una combinación interna para incluir más de dos tablas. La tabla Sales.SalesOrderDetail se une a la salida de JOIN entre Production.Product y Production.ProductModel. Cada instancia de JOIN/ON realiza sus propias operaciones de rellenado y filtrado de la tabla de salida virtual. El optimizador de consultas de SQL Server determina el orden en el que se realizarán las combinaciones y el filtrado.
+
+SQL
+
+Copiar
+SELECT od.SalesOrderID, m.Name AS Model, p.Name AS ProductName, od.OrderQty
+FROM Production.Product AS p
+INNER JOIN Production.ProductModel AS m
+    ON p.ProductModelID = m.ProductModelID
+INNER JOIN Sales.SalesOrderDetail AS od
+    ON p.ProductID = od.ProductID
+ORDER BY od.SalesOrderID;
+
+Uso de combinaciones externas
+Completado
+100 XP
+6 minutos
+Aunque no es tan común como las combinaciones internas, el uso de combinaciones externas en una consulta de varias tablas puede proporcionar una vista alternativa de los datos empresariales. Como sucede con las combinaciones internas, expresará una relación lógica entre las tablas. Pero no solo recuperará las filas con atributos coincidentes, sino también todas las filas presentes en una tablas o las dos, independientemente de si hay o no una coincidencia en la otra tabla.
+
+Anteriormente, ha aprendido a usar INNER JOIN para buscar filas coincidentes entre dos tablas. Como ha visto, el procesador de consultas genera los resultados de una consulta INNER JOIN filtrando las filas que no cumplen las condiciones expresadas en el predicado de la cláusula ON. El resultado es que solo se devuelven las filas con una fila coincidente en la otra tabla. Con OUTER JOIN, puede optar por mostrar todas las filas que tienen filas coincidentes entre las tablas, además de todas las filas que no tienen ninguna coincidencia en la otra tabla. Ahora se verá un ejemplo y, después, se examinará el proceso.
+
+En primer lugar, examine la consulta siguiente, escrita con INNER JOIN:
+
+SQL
+
+Copiar
+SELECT emp.FirstName, ord.Amount
+FROM HR.Employee AS emp
+INNER JOIN Sales.SalesOrder AS ord
+    ON emp.EmployeeID = ord.EmployeeID;
+Estas filas representan una coincidencia entre HR.Employee y Sales.SalesOrder. En los resultados solo aparecerán los valores EmployeeID que están en ambas tablas.
+
+A Venn diagram showing the matching members of the Employee and SalesOrder sets
+
+Ahora, se examinará la siguiente consulta, escrita como LEFT OUTER JOIN:
+
+SQL
+
+Copiar
+SELECT emp.FirstName, ord.Amount
+FROM HR.Employee AS emp
+LEFT OUTER JOIN Sales.SalesOrder AS ord
+    ON emp.EmployeeID = ord.EmployeeID;
+En este ejemplo se usa un operador LEFT OUTER JOIN, que indica al procesador de consultas que conserve todas las filas de la tabla de la izquierda (HR.Employee) y muestre los valores Amount para las filas coincidentes en Sales.SalesOrder. Pero se devuelven todos los empleados, independientemente de si han realizado o no un pedido de ventas. En lugar del valor Amount, la consulta devolverá NULL para los empleados sin pedidos de ventas correspondientes.
+
+A Venn diagram showing the outer join results of the Employee and SalesOrder sets
+
+Sintaxis de OUTER JOIN
+Las combinaciones externas se expresan mediante las palabras clave LEFT, RIGHT o FULL, que se colocan por delante de OUTER JOIN. El propósito de la palabra clave es indicar qué tabla (en qué lado de la palabra clave JOIN) se debe conservar y mostrar todas sus filas, haya coincidencias o no.
+
+Al usar LEFT, RIGHT o FULL para definir una combinación, puede omitir la palabra clave OUTER como se muestra aquí:
+
+SQL
+
+Copiar
+SELECT emp.FirstName, ord.Amount
+FROM HR.Employee AS emp
+LEFT JOIN Sales.SalesOrder AS ord
+    ON emp.EmployeeID = ord.EmployeeID;
+Pero como sucede con la palabra clave INNER, a menudo resulta útil escribir código que indique de forma explícita el tipo de combinación que se usa.
+
+Al escribir consultas mediante OUTER JOIN, tenga en cuenta las instrucciones siguientes:
+
+Como ha visto, se prefieren alias de tabla, no solo para la lista SELECT, sino también para la cláusula ON.
+Como sucede con INNER JOIN, se puede realizar una operación OUTER JOIN en una sola columna coincidente o en varios atributos coincidentes.
+A diferencia de INNER JOIN, el orden en el que las tablas se enumeran y se unen en la cláusula FROM sí importa con OUTER JOIN, ya que determinará si elige LEFT o RIGHT para la combinación.
+Las combinaciones de varias tablas son más complejas cuando se usa OUTER JOIN. La presencia de valores NULL en los resultados de OUTER JOIN puede provocar problemas si los resultados intermedios se combinan a una tercera tabla. El predicado de la segunda combinación puede filtrar las filas con valores NULL.
+Para mostrar solo las filas en las que no existe ninguna coincidencia, agregue una prueba de NULL en una cláusula WHERE después de un predicado OUTER JOIN.
+FULL OUTER JOIN rara vez se usa. Devuelve todas las filas coincidentes entre las dos tablas, más todas las filas de la primera tabla sin coincidencia en la segunda, además de todas las filas de la segunda sin coincidencia en la primera.
+No hay ninguna manera de predecir el orden en que se devolverán las filas sin una cláusula ORDER BY. No hay ninguna manera de saber si primero se devolverán las filas coincidentes o las no coincidentes.
+
+
+
+Uso de combinaciones cruzadas
+Completado
+100 XP
+3 minutos
+Una combinación cruzada es simplemente un producto cartesiano de las dos tablas. Con la sintaxis ANSI SQL-89, puede excluir el filtro que conecta las dos tablas para crear una combinación cruzada. Con la sintaxis ANSI-92, es un poco más difícil, lo que es positivo porque, en general, una combinación cruzada no es algo que normalmente le interesará. Con la sintaxis ANSI-92, es muy poco probable que termine con una combinación cruzada accidentalmente.
+
+Para crear de forma explícita un producto cartesiano, use el operador CROSS JOIN.
+
+Esta operación crea un conjunto de resultados con todas las combinaciones posibles de las filas de entrada:
+
+SQL
+
+Copiar
+SELECT <select_list>
+FROM table1 AS t1
+CROSS JOIN table2 AS t2;
+Aunque este resultado no suele ser una salida deseada, hay algunas aplicaciones prácticas para escribir una operación CROSS JOIN explícita:
+
+Crear una tabla de números, con una fila para cada valor posible de un intervalo.
+Generar grandes volúmenes de datos para pruebas. Cuando se le aplica una combinación cruzada a sí misma, una tabla con tan solo 100 filas puede generar fácilmente 10 000 filas de salida.
+Sintaxis de CROSS JOIN
+Al escribir consultas mediante CROSS JOIN, tenga en cuenta las instrucciones siguientes:
+
+No se realiza ninguna coincidencia de filas, por lo que no se usa ninguna cláusula ON. (Es un error usar una cláusula ON con CROSS JOIN).
+Para usar la sintaxis ANSI SQL-92, separe los nombres de tabla de entrada con el operador CROSS JOIN.
+La consulta siguiente es un ejemplo del uso de CROSS JOIN para crear todas las combinaciones de empleados y productos:
+
+SQL
+
+Copiar
+SELECT emp.FirstName, prd.Name
+FROM HR.Employee AS emp
+CROSS JOIN Production.Product AS prd;
+
+Uso de autocombinaciones
+Completado
+100 XP
+3 minutos
+Hasta ahora, en las combinaciones que se han usado participaban tablas diferentes. Es posible que haya escenarios en los que tenga que recuperar y comparar filas de una tabla con otras filas de la misma tabla. Por ejemplo, en una aplicación de recursos humanos, una tabla Employee podría incluir información sobre el jefe de cada empleado y almacenar el identificador del jefe en la propia fila del empleado. Cada jefe también aparece como empleado.
+
+EmployeeID (Id. de empleado)
+
+FirstName
+
+ManagerID
+
+1
+
+Dan
+
+NULL
+
+2
+
+Aisha
+
+1
+
+3
+
+Rosie
+
+1
+
+4
+
+Naomi
+
+3
+
+Para recuperar la información de los empleados y hacerla coincidir con el jefe relacionado, puede usar la tabla dos veces en la consulta, y combinarla con sí misma para los fines de la consulta.
+
+SQL
+
+Copiar
+SELECT emp.FirstName AS Employee, 
+       mgr.FirstName AS Manager
+FROM HR.Employee AS emp
+LEFT OUTER JOIN HR.Employee AS mgr
+  ON emp.ManagerID = mgr.EmployeeID;
+Los resultados de esta consulta incluyen una fila para cada empleado con el nombre de su jefe. El director general de la empresa no tiene ningún jefe. Para incluir al director general en los resultados, se usa una combinación externa y el nombre del jefe se devuelve como NULL para las filas en las que el campo ManagerID no tiene ningún campo EmployeeID coincidente.
+
+Empleado
+
+Manager
+
+Dan
+
+NULL
+
+Aisha
+
+Dan
+
+Rosie
+
+Dan
+
+Naomi
+
+Rosie
+
+Hay otros escenarios en los que querrá comparar filas de una tabla con otras filas de la misma tabla. Como ha visto, es bastante fácil comparar columnas de la misma fila mediante T-SQL, pero el método para comparar valores de filas diferentes (como una fila que almacena una hora de inicio y otra de la misma tabla que almacena una hora de finalización correspondiente) es menos obvio. Las autocombinaciones son una técnica útil para estos tipos de consultas.
+
+Para realizar tareas como esta, debe tener en cuenta las instrucciones siguientes:
+
+Defina dos instancias de la misma tabla en la cláusula FROM y combínelas según sea necesario, mediante combinaciones internas o externas.
+Use alias de tabla para diferenciar las dos instancias de la misma tabla.
+Use la cláusula ON para proporcionar un filtro que compare las columnas de una instancia de la tabla con las columnas de la otra instancia.
+
+<==============>
+LABORATORIO
+
+SELECT SalesLT.Product.Name AS producto, SalesLT.ProductCategory.Name AS CategoriaFROM SalesLT.Product INNER JOIN SalesLT.ProductCategoryON SalesLT.Product.ProductCategoryID = SalesLT.ProductCategory.ProductCategoryID;

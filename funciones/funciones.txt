@@ -1,0 +1,157 @@
+Aspectos básicos de las funciones de Python
+Completado
+100 XP
+1 minuto
+Las funciones son el siguiente paso después de haber aprendido los conceptos básicos de programación de Python. En su forma más sencilla, una función contiene código que siempre devuelve un valor (o valores). En algunos casos, una función también tiene entradas opcionales u obligatorias.
+
+Al empezar a escribir código que duplica otras partes del programa, se convierte en una oportunidad perfecta para extraer el código en una función. Aunque compartir código común mediante funciones es útil, también se puede limitar el tamaño del código extrayendo partes en funciones más pequeñas (y legibles).
+
+Los programas que evitan la duplicación y evitan funciones de gran tamaño mediante funciones más pequeñas son más legibles y fáciles de mantener. También son más fáciles de depurar cuando las cosas no funcionan correctamente.
+
+Hay varias reglas sobre las entradas de funciones que son fundamentales para aprovechar al máximo todo lo que las funciones tienen que ofrecer.
+
+ Importante
+
+Aunque se usa el término entrada para describir las funciones que se aceptan, estos elementos normalmente se denominan argumentos o parámetros. Para mantener la coherencia en este módulo, a las entradas las denominaremos argumentos.
+
+Funciones sin argumentos
+Para crear una función, use la palabra clave def, seguida de un nombre, paréntesis y, después, del cuerpo con el código de función:
+
+Python
+
+Copiar
+def rocket_parts():
+    print("payload, propellant, structure")
+En este caso, rocket_parts es el nombre de la función. Ese nombre va seguido de paréntesis vacíos, que indican que no se necesitan argumentos. El último es el código, con sangría de cuatro espacios. Para usar la función, debe llamarla por su nombre usando paréntesis:
+
+Python
+
+Copiar
+>>> rocket_parts()
+'payload, propellant, structure'
+La función rocket_parts() no toma ningún argumento e imprime una instrucción sobre la gravedad. Si necesita usar un valor que devuelve una función, puede asignar la salida de la función a una variable:
+
+Python
+
+Copiar
+>>> output = rocket_parts()
+payload, propellant, structure
+>>> output is None
+True
+Puede parecer sorprendente que el valor de la variable output sea None. Esto se debe a que la función rocket_parts() no ha devuelto explícitamente un valor. En Python, si una función no devuelve explícitamente un valor, devuelve implícitamenteNone. Actualizar la función para devolver la cadena en lugar de imprimirla hace que la variable output tenga un valor distinto:
+
+Python
+
+Copiar
+>>> def rocket_parts():
+...     return "payload, propellant, structure"
+...
+>>> output = rocket_parts()
+>>> output
+'payload, propellant, structure'
+Si necesita usar el valor de una función, esa función debe devolver explícitamente. De lo contrario; se devolverá None.
+
+ Nota
+
+No es necesario asignar siempre la devolución de una función. En la mayoría de los casos en los que una función no devuelve un valor (o valores) explícitamente, significa que no es necesario asignar ni usar el valor implícito None que se devuelve.
+
+Argumentos opcionales y requeridos
+En Python, varias funciones integradas requieren argumentos. Algunas funciones integradas hacen que los argumentos sean opcionales. Las funciones integradas están disponibles de inmediato, por lo que no es necesario importarlas explícitamente.
+
+Un ejemplo de una función integrada que requiere un argumento es any(). Esta función toma un objeto iterable (por ejemplo, una lista) y devuelve True si algún elemento del objeto iterable es True. De lo contrario, devuelve False.
+
+Python
+
+Copiar
+>>> any([True, False, False])
+True
+>>> any([False, False, False])
+False
+Si llama a any() sin ningún argumento, se genera una excepción útil. El mensaje de error explica que necesita al menos un argumento:
+
+Python
+
+Copiar
+>>> any()
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+TypeError: any() takes exactly one argument (0 given)
+Puede comprobar que algunas funciones permiten el uso de argumentos opcionales mediante otra función integrada denominada str(). Esta función crea una cadena a partir de un argumento. Si no se pasa ningún argumento, devuelve una cadena vacía:
+
+Python
+
+Copiar
+>>> str()
+''
+>>> str(15)
+'15'
+
+
+Uso de argumentos de palabra clave en Python
+Completado
+100 XP
+1 minuto
+Los argumentos opcionales requieren un valor predeterminado asignado a ellos. Estos argumentos con nombre se denominan argumentos de palabra clave. Los valores del argumento de palabra clave deben definirse en las propias funciones. Cuando se llama a una función definida con argumentos de palabra clave, no es necesario usarlos en absoluto.
+
+La misión Apolo 11 tardó unas 51 horas en llegar a la Luna. Vamos a crear una función que devuelva la hora estimada de llegada usando el mismo valor que la misión Apolo 11 como valor predeterminado:
+
+Python
+
+Copiar
+from datetime import timedelta, datetime
+
+def arrival_time(hours=51):
+    now = datetime.now()
+    arrival = now + timedelta(hours=hours)
+    return arrival.strftime("Arrival: %A %H:%M")
+La función usa el módulo datetime para definir la hora actual. Usa timedelta para permitir la operación de suma que da como resultado un objeto de hora nuevo. Después de calcular ese resultado, devuelve la estimación arrival con formato de cadena. Intente llamarla sin ningún argumento:
+
+Python
+
+Copiar
+>>> arrival_time()
+'Arrival: Saturday 16:42'
+Aunque la función define un argumento de palabra clave, no permite pasar uno cuando se llama a una función. En este caso, la variable hours tiene como valor predeterminado 51. Para comprobar que la fecha actual es correcta, use 0 como valor para hours:
+
+Python
+
+Copiar
+>>> arrival_time(hours=0)
+'Arrival: Thursday 13:42'
+Combinación de argumentos y argumentos de palabra clave
+A veces, una función necesita una combinación de argumentos de palabra clave y argumentos. En Python, esta combinación sigue un orden específico. Los argumentos siempre se declaran primero, seguidos de argumentos de palabra clave.
+
+Actualice la función arrival_time() para que tome un argumento necesario, que es el nombre del destino:
+
+Python
+
+Copiar
+from datetime import timedelta, datetime
+
+def arrival_time(destination, hours=51):
+    now = datetime.now()
+    arrival = now + timedelta(hours=hours)
+    return arrival.strftime(f"{destination} Arrival: %A %H:%M")
+Dado que ha agregado un argumento necesario, ya no es posible llamar a la función sin ningún argumento:
+
+Python
+
+Copiar
+>>> arrival_time()
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+TypeError: arrival_time() missing 1 required positional argument: 'destination'
+Use "Moon" como valor para destination a fin de evitar el error:
+
+Python
+
+Copiar
+>>> arrival_time("Moon")
+'Moon Arrival: Saturday 16:54'
+También puede pasar más de dos valores, pero debe separarlos con una coma. Se tarda aproximadamente 8 minutos (0,13 horas) en entrar en órbita, así que utilice eso como argumento:
+
+Python
+
+Copiar
+>>> arrival_time("Orbit", hours=0.13)
+'Orbit Arrival: Thursday 14:11'
